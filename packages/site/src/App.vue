@@ -5,8 +5,8 @@
         <layout-header></layout-header>
         <div v-if="page !== 'home'" class="main-wrapper">
           <ix-row>
-            <ix-col xs="0" sm="7" md="6" lg="5" xl="4" class="main-menu">
-              <ix-affix>
+            <ix-col xs="0" sm="7" md="6" lg="5" xl="4" :class="menuClasses">
+              <ix-affix @change="onChange">
                 <layout-side-nav></layout-side-nav>
               </ix-affix>
             </ix-col>
@@ -40,7 +40,7 @@ import { useScreens } from '@idux/cdk/breakpoint'
 import { ModalProviderInstance } from '@idux/components/modal'
 import { appContextToken, AppContext } from './context'
 import LayoutHeader from './components/layout/header/Index.vue'
-import LayoutSideNav from './components/layout/SideNav.vue'
+import LayoutSideNav from './components/layout/sideNav/Index.vue'
 import LayoutFooter from './components/layout/footer/Index.vue'
 
 export default defineComponent({
@@ -60,6 +60,22 @@ export default defineComponent({
 
     const screens = useScreens()
 
+    const collapsed = ref(false)
+    const onTriggerSideNav =(isCollapsed: boolean)=>{
+        collapsed.value = isCollapsed
+    }
+
+    const onChange = ()=>{
+      console.log(111)
+    }
+
+    const menuClasses = computed(()=>{
+      return {
+        'main-menu': true,
+        'collapsed': collapsed.value,
+      }
+    })
+
     const appContext: AppContext = {
       org: 'IDuxFE',
       repo: 'components',
@@ -67,11 +83,12 @@ export default defineComponent({
       path,
       page,
       screens,
+      onTriggerSideNav,
     }
 
     provide(appContextToken, appContext)
 
-    return { page, modalProviderRef }
+    return { page, modalProviderRef, menuClasses, onChange }
   },
 })
 </script>

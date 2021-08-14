@@ -10,6 +10,7 @@ export interface AppContext {
   path: ComputedRef<string>
   page: ComputedRef<string>
   screens: Record<BreakpointKey, boolean>
+  onTriggerSideNav: (checked: boolean) => void,
 }
 
 export const appContextToken: InjectionKey<AppContext> = Symbol('appContextToken')
